@@ -2868,6 +2868,35 @@
       <field name="heightObject"   		type="uint8"/>
       <field name="distanceToObject"    type="uint8"/>
     </message>
+    
+    <message name="STEREOCAM_VISUALHOMING"  id="90">
+      <field name="FOLLOW_X"      type="int8">Vector to follow</field>
+      <field name="FOLLOW_Y"      type="int8"/>
+      <field name="MODE"          type="uint8">0: Snapshot, 1: Odometry</field>
+      <field name="TARGET"        type="uint16">Target snapshot ID (UINT16_MAX: no target)</field>
+      <field name="SNAPSHOT_X"    type="int8">Homing vector towards snapshot (body frame?)</field>
+      <field name="SNAPSHOT_Y"    type="int8"/>
+      <field name="ODO_X"         type="int8">Odometry vector towards snapshot (body frame?)</field>
+      <field name="ODO_Y"         type="int8"/>
+      <field name="RECORD_MODE"   type="uint8">0: Clear, 1: Single, 2: Route (time) 3: Route (CA radius)</field>
+      <field name="ODO_ENABLED"   type="uint8">Odometry enabled for navigation?</field>
+      <field name="ODO_R"         type="uint8">Current position uncertainty (Variance)</field>
+      <field name="CA_RADIUS"     type="uint8">Estimated CA radius (-1.0 if unknown)</field>
+      <field name="SNAPSHOT_K"    type="uint8">Number of components in snapshot</field>
+      <field name="CURRENT_SS"    type="int8[]">Current image as snapshot</field>
+      <field name="TARGET_SS"     type="int8[]">Target snapshot</field>
+    </message>
+    
+    <message name="STEREOCAM_VISUALHOMING_COMMAND" id="91">
+      <field name="ATT_PHI"       type="int8">Current attitude</field>
+      <field name="ATT_THETA"     type="int8"/>
+      <field name="ATT_PSI"       type="int8"/>
+      <field name="DX"            type="int8">Distance moved since last message (in current body frame)</field>
+      <field name="DY"            type="int8"/>
+      <field name="R"             type="uint8">Uncertainty in distance measurement (Variance)</field>
+      <field name="USE_ODOMETRY"  type="uint8">Enable/disable odometry for navigation</field>
+      <field name="RECORD_MODE"   type="uint8">0: Clear, 1: Single, 2: Route (time) 3: Route (CA radius)</field>
+    </message>
 
     <message name="IMCU_DATALINK" id="113">
      <description>Forward FBW datalink to AP</description>
