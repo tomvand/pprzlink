@@ -2869,7 +2869,12 @@
       <field name="distanceToObject"    type="uint8"/>
     </message>
     
-    <message name="STEREOCAM_VISUALHOMING"  id="90">
+    <message name="STEREOCAM_VISUALHOMING" id="90">
+      <field name="X"   type="float">Vector to follow (body frame)</field>
+      <field name="Y"   type="float"/>
+    </message>
+    
+    <!-- <message name="STEREOCAM_VISUALHOMING"  id="90">
       <field name="FOLLOW_X"      type="float">Vector to follow</field>
       <field name="FOLLOW_Y"      type="float"/>
       <field name="MODE"          type="uint8">0: Snapshot, 1: Odometry</field>
@@ -2885,7 +2890,7 @@
       <field name="SNAPSHOT_K"    type="uint8">Number of components in snapshot</field>
       <field name="CURRENT_SS"    type="int8[]">Current image as snapshot</field>
       <field name="TARGET_SS"     type="int8[]">Target snapshot</field>
-    </message>
+    </message> -->
     
     <message name="STEREOCAM_VISUALHOMING_COMMAND" id="91">
       <field name="ATT_PHI"       type="int8">Current attitude</field>
