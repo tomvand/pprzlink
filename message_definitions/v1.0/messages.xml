@@ -2870,8 +2870,9 @@
     </message>
     
     <message name="STEREOCAM_VISUALHOMING" id="90">
-      <field name="X"   type="float">Vector to follow (body frame)</field>
-      <field name="Y"   type="float"/>
+      <field name="X"   type="int8">Vector to follow (body frame)</field>
+      <field name="Y"   type="int8"/>
+      <field name="ID"  type="uint8">Target snapshot ID</field>
     </message>
     
     <!-- <message name="STEREOCAM_VISUALHOMING"  id="90">
@@ -2893,7 +2894,22 @@
     </message> -->
     
     <message name="STEREOCAM_VISUALHOMING_COMMAND" id="91">
-      <field name="RECORD_MODE"   type="uint8">0: Clear, 1: Single, 2: Route (fixed), 3: Route (CA radius)</field>
+      <field name="MODE"   type="uint8">
+        bit 0x01: Clear? No (0) or Yes (1)
+        bit 0x02: Record? No (0) or Yes (1)
+        bit 0x04: Single (0) or Route (1)
+        bit 0x08: Use odometry? No (0) or Yes (1)
+        bit 0x10: Use CA radius? No (0) or Yes (1)
+        bit 0x20: Derotate? No (0) or Yes (1)
+        bit 0x40: (Reserved, set to 0)
+        bit 0x80: (Reserved, set to 0)
+      </field>
+      <field name="ATT_PHI"   type="int8">Current attitude</field>
+      <field name="ATT_THETA" type="int8"/>
+      <field name="ATT_PSI"   type="int8"/>
+      <field name="DX"        type="int8">Distance moved since last message (in current body frame)</field>
+      <field name="DY"        type="int8"/>
+      <field name="R"         type="uint8">Uncertainty in distance measurement (measurement variance)</field>
     </message>
     
     <!-- <message name="STEREOCAM_VISUALHOMING_COMMAND" id="91">
