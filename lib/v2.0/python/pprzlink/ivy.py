@@ -8,8 +8,8 @@ import sys
 import re
 import platform
 
-from .message import PprzMessage
-from . import messages_xml_map
+from pprzlink.message import PprzMessage
+from pprzlink import messages_xml_map
 
 
 if os.getenv('IVY_BUS') is not None:
@@ -62,7 +62,7 @@ class IvyMessagesInterface(object):
     def unsubscribe_all(self):
         for b in self.bindings.keys():
             IvyUnBindMsg(b)
-            del self.bindings[b]
+        self.bindings = {}
 
     def shutdown(self):
         try:
@@ -90,15 +90,14 @@ class IvyMessagesInterface(object):
     def subscribe(self, callback, regex_or_msg='(.*)'):
         """
         Subscribe to Ivy message matching regex and call callback with ac_id and PprzMessage
-        TODO: possibility to directly specify PprzMessage instead of regex
 
         :param callback: function called on new message with ac_id and PprzMessage as params
-        :param regex: regular expression for matching message
+        :param regex_or_msg: regular expression for matching message or a PprzMessage object to subscribe to
         """
         if not isinstance(regex_or_msg,PprzMessage):
             regex = regex_or_msg
         else:
-            regex = '^([^ ]* +%s(.*|$))'%(regex_or_msg.name)    #TODO: verify if a whitespace is not missing (after '%s')
+            regex = '^([^ ]* +%s( .*|$))'%(regex_or_msg.name)
 
         bind_id = IvyBindMsg(lambda agent, *larg: self.parse_pprz_msg(callback, larg[0]), regex)
         self.bindings[bind_id] = (callback, regex)
@@ -186,7 +185,7 @@ class IvyMessagesInterface(object):
         Send a message
 
         :param msg: PprzMessage or simple string
-        :param ac_id: Needed if sending a PprzMessage of telemetry msg_class
+        :param sender_id: Needed if sending a PprzMessage of telemetry msg_class, otherwise message class might be used instead
         :returns: Number of clients the message sent to, None if msg was invalid
         """
         if not self._running:
@@ -200,6 +199,9 @@ class IvyMessagesInterface(object):
                 else:
                     return IvySendMsg("%d %s %s" % (sender_id, msg.name, msg.payload_to_ivy_string()))
             else:
-                return IvySendMsg("%s %s %s" % (msg.msg_class, msg.name, msg.payload_to_ivy_string()))
+                if sender_id is None:
+                    return IvySendMsg("%s %s %s" % (msg.msg_class, msg.name, msg.payload_to_ivy_string()))
+                else:
+                    return IvySendMsg("%s %s %s" % (str(sender_id), msg.name, msg.payload_to_ivy_string()))
         else:
             return IvySendMsg(msg)

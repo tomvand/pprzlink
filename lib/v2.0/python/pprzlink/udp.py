@@ -7,8 +7,8 @@ import threading
 import socket
 
 # load pprzlink messages and transport
-from .message import PprzMessage
-from .pprz_transport import PprzTransport
+from pprzlink.message import PprzMessage
+from pprzlink.pprz_transport import PprzTransport
 
 # default port
 UPLINK_PORT = 4243
@@ -54,7 +54,7 @@ class UdpMessagesInterface(threading.Thread):
 
     def send(self, msg, sender_id, address, receiver = 0, component= 0):
         """ Send a message over a UDP link"""
-#TODO use sender_id from constructor
+		#TODO use sender_id from constructor
         if isinstance(msg, PprzMessage):
             data = self.trans.pack_pprz_msg(sender_id, msg, receiver, component)
             try:

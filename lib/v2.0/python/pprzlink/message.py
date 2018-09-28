@@ -8,7 +8,7 @@ import sys
 import json
 import struct
 import re
-import messages_xml_map
+from pprzlink import messages_xml_map
 
 
 class PprzMessageError(Exception):
@@ -154,7 +154,7 @@ class PprzMessage(object):
         ret = '%s.%s {' % (self.msg_class, self.name)
         for idx, f in enumerate(self.fieldnames):
             ret += '%s : %s, ' % (f, self.fieldvalues[idx])
-        ret = ret[0:-2] + '}'
+        ret = ret + '}'
         return ret
 
     def to_dict(self, payload_only=False):

@@ -329,7 +329,7 @@
       <field name="u_ins" type="float" unit="m/s">INS velocity along body +x axis</field>
       <field name="v_ins" type="float" unit="m/s">INS velocity along body +y axis</field>
     </message>
-    
+
     <message name="RSSI_COMBINED" id="39">
       <field name="remote_rssi" type="uint8"/>
       <field name="tx_power" type="uint8"/>
@@ -397,7 +397,18 @@
       <field name="alt" type="int32" unit="mm" alt_unit="m">Height above Mean Sea Level (geoid)</field>
     </message>
 
-    <!-- 48 is free -->
+    <message name="RLFILTER" id="48">
+      <description>Relative localization data for other tracked MAVs in terms of x y and z in the body axis</description>
+      <field name="trackedID"      type="int32"    unit=""/>
+      <field name="rangearray"     type="float" unit="dB"/>
+      <field name="x_tracked"  type="float"    unit="m/s"/>
+      <field name="y_tracked"  type="float"    unit="m/s"/>
+      <field name="vx_own"     type="float"    unit="m/s"/>
+      <field name="vy_own"     type="float"    unit="m/s"/>
+      <field name="vx_tracked" type="float"    unit="m/s"/>
+      <field name="vy_tracked" type="float"    unit="m/s"/>
+      <field name="z_pos"      type="float"    unit="m"/>
+    </message>
 
     <message name="WP_MOVED_ENU" id="49">
       <field name="wp_id" type="uint8"/>
@@ -451,7 +462,18 @@
       <field name="scaled" type="float"/>
     </message>
 
-    <!-- 58 is free -->
+    <message name="VISION_OUTBACK" id="58">
+      <field name="status" type="uint8"/>
+      <field name="het_moment" type="uint8"/>
+      <field name="timeoutcount" type="uint8"/>
+      <field name="vision_timeout" type="uint8"/>
+      <field name="height" type="float"/>
+      <field name="out_of_range" type="float"/>
+      <field name="marker_enu_x" type="float"/>
+      <field name="marker_enu_y" type="float"/>
+      <field name="flow_x" type="float"/>
+      <field name="flow_y" type="float"/>
+    </message>
 
     <message name="GPS_LLA" id="59">
       <field name="lat"        type="int32"  unit="1e7deg" alt_unit="deg" alt_unit_coef="0.0000001"/>
@@ -1359,6 +1381,12 @@
       <field name="zdd"            type="float"/>
       <field name="bias"           type="float"/>
       <field name="offset"         type="float"/>
+      <field name="obs_height"     type="float"/>
+      <field name="Pzz"            type="float"/>
+      <field name="Pzdzd"          type="float"/>
+      <field name="Pbb"            type="float"/>
+      <field name="Poffsetoffset"  type="float"/>
+      <field name="Pobsobs"        type="float"/>
     </message>
 
     <message name="VFF" id="162">
@@ -1771,7 +1799,18 @@
       <field name="image_data" type="uint8[]"/>
     </message>
 
-    <!-- 230 is free -->
+    <message name="ROVER_STATUS" id="230">
+      <description>
+        Rover status message
+      </description>
+      <field name="rc_status"    type="uint8" values="OK|LOST|REALLY_LOST"/>
+      <field name="frame_rate"   type="uint8" unit="Hz"/>
+      <field name="gps_status"   type="uint8" values="NO_FIX|NA|2D|3D|DGPS|RTK"/>
+      <field name="ap_mode"      type="uint8">Rover AP modes are generated from XML file</field>
+      <field name="ap_motors_on" type="uint8" values="MOTORS_OFF|MOTORS_ON"/>
+      <field name="vsupply"      type="uint16" unit="decivolt"/>
+      <field name="cpu_time"     type="uint16" unit="s"/>
+    </message>
 
     <message name="ROTORCRAFT_STATUS" id="231">
       <field name="link_imu_nb_err" type="uint32"/>
@@ -1782,6 +1821,7 @@
       <field name="ap_mode"      type="uint8" values="KILL|FAILSAFE|HOME|RATE_DIRECT|ATTITUDE_DIRECT|RATE_RC_CLIMB|ATTITUDE_RC_CLIMB|ATTITUDE_CLIMB|RATE_Z_HOLD|ATTITUDE_Z_HOLD|HOVER_DIRECT|HOVER_CLIMB|HOVER_Z_HOLD|NAV|RC_DIRECT|CARE_FREE|FORWARD|MODULE|FLIP|GUIDED"/>
       <field name="ap_in_flight" type="uint8" values="ON_GROUND|IN_FLIGHT"/>
       <field name="ap_motors_on" type="uint8" values="MOTORS_OFF|MOTORS_ON"/>
+      <field name="arming_status" type="uint8" values="NO_RC|WAITING|ARMING|ARMED|DISARMING|KILLED|YAW_CENTERED|THROTTLE_DOWN|NOT_MODE_MANUAL|UNARMED_IN_AUTO|THROTTLE_NOT_DOWN|STICKS_NOT_CENTERED|PITCH_NOT_CENTERED|ROLL_NOT_CENTERED|YAW_NOT_CENTERED|AHRS_NOT_ALLIGNED|OUT_OF_GEOFENCE|LOW_BATTERY"/>
       <field name="ap_h_mode"    type="uint8" values="KILL|RATE|ATTITUDE|HOVER|NAV|RC_DIRECT|CF|FORWARD|MODULE|FLIP|GUIDED"/>
       <field name="ap_v_mode"    type="uint8" values="KILL|RC_DIRECT|RC_CLIMB|CLIMB|HOVER|NAV|MODULE|FLIP|GUIDED"/>
       <field name="vsupply"      type="uint16" unit="decivolt"/>
@@ -2255,28 +2295,17 @@
       <field name="index" type="uint8"/>
     </message>
 
-    <message name="MISSION_SURVEY" id="28" link="forwarded">
-      <field name="ac_id" type="uint8"/>
-      <field name="insert" type="uint8" values="APPEND|PREPEND|REPLACE_CURRENT|REPLACE_ALL"/>
-      <field name="survey_east_1" type="float" unit="m"/>
-      <field name="survey_north_1" type="float" unit="m"/>
-      <field name="survey_east_2" type="float" unit="m"/>
-      <field name="survey_north_2" type="float" unit="m"/>
-      <field name="survey_alt" type="float" unit="m">altitude above geoid (MSL)</field>
-      <field name="duration" type="float" unit="s"/>
-      <field name="index" type="uint8"/>
-    </message>
-
-    <message name="MISSION_SURVEY_LLA" id="29" link="forwarded">
-      <field name="ac_id" type="uint8"/>
-      <field name="insert" type="uint8" values="APPEND|PREPEND|REPLACE_CURRENT|REPLACE_ALL"/>
-      <field name="survey_lat_1" type="int32" unit="1e7deg" alt_unit="deg" alt_unit_coef="0.0000001"/>
-      <field name="survey_lon_1" type="int32" unit="1e7deg" alt_unit="deg" alt_unit_coef="0.0000001"/>
-      <field name="survey_lat_2" type="int32" unit="1e7deg" alt_unit="deg" alt_unit_coef="0.0000001"/>
-      <field name="survey_lon_2" type="int32" unit="1e7deg" alt_unit="deg" alt_unit_coef="0.0000001"/>
-      <field name="survey_alt" type="int32" unit="mm" alt_unit="m">altitude above geoid (MSL)</field>
-      <field name="duration" type="float" unit="s"/>
-      <field name="index" type="uint8"/>
+    <message name="MISSION_CUSTOM" id="28" link="forwarded">
+      <description>
+        Custom navigation pattern or action for mission controller.
+        This will add the mission element correspond to the string identifier 'type' if it has been registered.
+      </description>
+      <field name="ac_id" type="uint8">Aircraft ID</field>
+      <field name="insert" type="uint8" values="APPEND|PREPEND|REPLACE_CURRENT|REPLACE_ALL|REPLACE_NEXT">Insertion mode</field>
+      <field name="index" type="uint8">Mission element index, should be unique</field>
+      <field name="type" type="char[5]">String identifier of the custom pattern</field>
+      <field name="duration" type="float" unit="s">Duration of the element or -1 for unlimited</field>
+      <field name="params" type="float[]">List of parameters, 12 max</field>
     </message>
 
     <message name="GOTO_MISSION" id="30" link="forwarded">
@@ -2915,8 +2944,8 @@
 
   <msg_class name="intermcu" id="5">
 
-	<!-- KEEP INTERMCU MESSAGES BELOW 8 BYTES PER MESSAGES
-		 TO ALLOW TRANSFER OVER CAN BUS -->
+  <!-- KEEP INTERMCU MESSAGES BELOW 8 BYTES PER MESSAGES
+     TO ALLOW TRANSFER OVER CAN BUS -->
 
     <message name="IMCU_COMMANDS" id="1">
       <field name="status" type="uint8"/>
@@ -2975,8 +3004,8 @@
       <field name="numsv"   type="uint8"/>
       <field name="fix"     type="uint8" values="NONE|NA|2D|3D|DGPS|RTK"/>
     </message>
-    
-    
+
+
     <message name="STEREOCAM_ARRAY" id="80">
       <description>Raw data fromt the stereocamera. Type defines what kind of data it is. This can be raw image, disparity map, obstacle histogram, ect.</description>
       <field name="type" type="uint8" values="DIST_MATRIX|HISTOGRAM|DISPARITY_MAP|RAW"/>
@@ -2985,7 +3014,7 @@
       <field name="package_nb" type="uint8">If the data being sent is too large for one message (e.g when sending a full image) this will indicate which package of the total data is contained in this message</field>
       <field name="image_data" type="uint8[]"/>
     </message>
-    
+
     <message name="STEREOCAM_VELOCITY" id="81">
       <description>Velocity measured using optical flow and stereovision. All parameters are in the camera frame</description>
       <field name="resolution" type="uint8">Resolution of the vel and pos messages</field>
@@ -3001,7 +3030,7 @@
       <field name="posRMS"     type="uint8">RMS of the position</field>
       <field name="avg_dist"   type="uint16">Average distance to scene</field>
     </message>
-    
+
     <message name="STEREOCAM_STATE" id="82">
       <description>Estimated state of the camera. As the stereocamera has no inertial sensors, this data should be sent to the stereocamera to enable onboard derotation of the optical flow</description>
       <field name="phi" 	type="float" unit="rad">Pitch, roll and yaw angles of the camera</field>
@@ -3009,7 +3038,7 @@
       <field name="psi"     type="float" unit="rad"/>
       <field name="agl"     type="float" unit="m">Altitude above the ground. If not looking down, set to 0</field>
     </message>
-    
+
     <message name="STEREOCAM_FOLLOW_ME" id="83">
       <field name="headingToFollow" 	type="uint8"/>
       <field name="heightObject"   		type="uint8"/>
@@ -3017,12 +3046,12 @@
     </message>
 
     <message name="IMCU_DATALINK" id="113">
-     <description>Forward FBW datalink to AP</description>
+      <description>Forward FBW datalink to AP</description>
       <field name="msg" type="uint8[]"/>
     </message>
 
     <message name="IMCU_TELEMETRY" id="114">
-      <field name="msg_id" type="uint8"/>
+      <description>Forward AP telemetry to FBW</description>
       <field name="msg" type="uint8[]"/>
     </message>
 
@@ -3035,5 +3064,5 @@
     </message>
 
   </msg_class>
-  
+
 </protocol>

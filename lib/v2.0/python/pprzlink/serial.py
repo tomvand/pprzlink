@@ -3,8 +3,8 @@ from __future__ import absolute_import, division, print_function
 import threading
 import serial
 
-from .message import PprzMessage
-from .pprz_transport import PprzTransport
+from pprzlink.message import PprzMessage
+from pprzlink.pprz_transport import PprzTransport
 
 
 class SerialMessagesInterface(threading.Thread):
@@ -37,10 +37,10 @@ class SerialMessagesInterface(threading.Thread):
         except:
             pass
 
-    def send(self, msg, sender_id):
+    def send(self, msg, sender_id,receiver_id = 0, component_id = 0):
         """ Send a message over a serial link"""
         if isinstance(msg, PprzMessage):
-            data = self.trans.pack_pprz_msg(sender_id, msg)
+            data = self.trans.pack_pprz_msg(sender_id, msg, receiver_id, component_id)
             self.ser.write(data)
             self.ser.flush()
 
@@ -56,7 +56,7 @@ class SerialMessagesInterface(threading.Thread):
                         if self.verbose:
                             print("New incoming message '%s' from %i (%i) to %i" % (msg.name, sender_id, component_id, receiver_id))
                         # Callback function on new message
-                        if self.id == receiver_id
+                        if self.id == receiver_id:
                             self.callback(sender_id, msg)
 
         except StopIteration:
@@ -64,9 +64,16 @@ class SerialMessagesInterface(threading.Thread):
 
 
 def test():
+    '''
+    run test program as a module to avoid namespace conflicts with serial module:
+    
+    python -p pprzlink.serial
+
+    pprzlink should be installed in a python standard path or included to your PYTHONPATH
+    '''
     import time
     import argparse
-    from . import messages_xml_map
+    from pprzlink import messages_xml_map
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-f", "--file", help="path to messages.xml file")
