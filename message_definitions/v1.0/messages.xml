@@ -373,14 +373,16 @@
       <field name="percevite_vx" type="float" unit="m/s">eVO velocity in body axes</field>
       <field name="percevite_vy" type="float" unit="m/s">eVO velocity in body axes</field>
       <field name="percevite_vz" type="float" unit="m/s">eVO velocity in body axes</field>
+      <field name="percevite_timeout" type="float" unit="s">Time since last message</field>
       <field name="percevite_time_since_vel" type="float" unit="s">Time since last velocity update</field>
-      <field name="percevite_safe_dist" type="float" unit="m">Safe distance</field>
-      <field name="percevite_safe_dist_seq" type="uint32">Safe distance sequence number</field>
-      <field name="percevite_raw_dist" type="float" unit="m">Raw distance measurement</field>
-      <field name="percevite_valid_px" type="float">Ratio of valid pixels</field>
-      <field name="percevite_time_since_dist" type="float" unit="s">Time since last safe distance update</field>
       <field name="percevite_wp_id" type="uint8">Percevite waypoint</field>
       <field name="percevite_tgt_id" type="uint8">Target waypoint</field>
+      <field name="percevite_rx" type="float" unit="m">Request in body axes</field>
+      <field name="percevite_ry" type="float" unit="m">Request in body axes</field>
+      <field name="percevite_rz" type="float" unit="m">Request in body axes</field>
+      <field name="percevite_gx" type="float" unit="m">Vector in body axes</field>
+      <field name="percevite_gy" type="float" unit="m">Vector in body axes</field>
+      <field name="percevite_gz" type="float" unit="m">Vector in body axes</field>
     </message>
 
     <message name="BARO_WORDS" id="46">
