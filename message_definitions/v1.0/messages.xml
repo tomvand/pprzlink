@@ -380,9 +380,11 @@
       <field name="percevite_rx" type="float" unit="m">Request in body axes</field>
       <field name="percevite_ry" type="float" unit="m">Request in body axes</field>
       <field name="percevite_rz" type="float" unit="m">Request in body axes</field>
+      <field name="request_flags" type="uint8">Request flags</field>
       <field name="percevite_gx" type="float" unit="m">Vector in body axes</field>
       <field name="percevite_gy" type="float" unit="m">Vector in body axes</field>
       <field name="percevite_gz" type="float" unit="m">Vector in body axes</field>
+      <field name="reply_flags" type="uint8">Vector flags</field>
     </message>
 
     <message name="BARO_WORDS" id="46">
